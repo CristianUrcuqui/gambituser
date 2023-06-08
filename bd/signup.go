@@ -23,12 +23,15 @@ func SignUp(sig models.SignUp) error {
 	// Asegura que la conexión a la base de datos se cierre al finalizar la función
 	defer Db.Close()
 
-	// Genera la consulta SQL para insertar el nuevo usuario
-	queryinsert := "INSERT INTO users (User_Email, User_UUID, User_DateAdd) VALUES ('" + sig.UserEmail + "', '" + sig.UserUUID + "', '" + tools.DateMySQL() + "')"
-	fmt.Println(queryinsert)
+	// Prepara la consulta SQL
+	stmt, err := Db.Prepare("INSERT INTO users (User_Email, User_UUID, User_DateAdd) VALUES (?, ?, ?)")
+	if err != nil {
+		fmt.Println(err.Error())
+		return err
+	}
 
-	// Ejecuta la consulta SQL
-	_, err = Db.Exec(queryinsert)
+	// Ejecuta la consulta SQL con los valores proporcionados
+	_, err = stmt.Exec(sig.UserEmail, sig.UserUUID, tools.DateMySQL())
 	if err != nil {
 		fmt.Println(err.Error())
 		return err
