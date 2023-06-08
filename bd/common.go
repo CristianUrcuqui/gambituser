@@ -60,7 +60,7 @@ func ConnStr(keys models.SecretRDSJson) string {
 	dbUser = keys.Username
 	authToken = keys.Password
 	dbEndPoint = keys.Host
-	dbName = "gambit"
+	dbName = "gambitsas"
 	dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s?allowCleartextPasswords=true", dbUser, authToken, dbEndPoint, dbName)
 	fmt.Println(dsn) // Solo para desarrollo hacer esto, en prod no se debe hacer
 	return dsn
